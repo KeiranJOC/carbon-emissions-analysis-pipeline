@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "==1.5.2"
+prefect = "==2.7.7"
+prefect-gcp = {extras = ["cloud_storage"], version = "0.2.4"}
+protobuf = "==4.21.11"
+pyarrow = "==10.0.1"
+pandas-gbq = "==0.18.1"
+openpyxl = "*"
+xlrd = "*"
+xlwt = "*"
+
+[requires]
+python_version = "3.9"
