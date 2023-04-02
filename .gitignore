@@ -13,3 +13,4 @@
 serving_dir
 *.csv
 .ipynb_checkpoints/
+*.parquet
