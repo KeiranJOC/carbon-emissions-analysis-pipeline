@@ -10,7 +10,7 @@ prefect-gcp = {extras = ["cloud_storage"], version = "0.2.4"}
 protobuf = "==4.21.11"
 pyarrow = "==10.0.1"
 pandas-gbq = "==0.18.1"
-openpyxl = "*"
+openpyxl = "==3.1.2"
 
 [requires]
 python_version = "3.9"

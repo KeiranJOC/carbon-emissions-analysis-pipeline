@@ -80,31 +80,34 @@ def write_to_bq(df: pd.DataFrame, table_name: str) -> None:
 
 
 @flow()
-def load_data() -> None:
+def load_dataset(year: int, table_name: str, file_info: dict) -> None:
     
-    month = 'nov'
-    year = 2022
+    print(f"Dataset: {file_info['name']}")
+    df = fetch(file_info['path'], year)
+    df_clean = clean(df)
+    path = write_to_local(df_clean, file_info['name'])
+    write_to_gcs(path)
+    write_to_bq(df_clean, table_name)
+
+
+@flow()
+def load_data_parent_flow(month: str, year: int) -> None:
 
     files = {
         'energy_consumption': {
             'path': f'http://www.ecodriver.uk.com/eCMS/Files/MOJ/ministryofjustice_{month}-{year}.csv',
-            'file': f'ministry_of_justice_{month}-{year}',
+            'name': f'ministry_of_justice_{month}-{year}',
         },
         'conversion_factors': {
             'path': f'data/ghg-conversion-factors-{year}-flat-format.xlsx',
-            'file': f'ghg-conversion-factors-{year}',
+            'name': f'ghg-conversion-factors-{year}',
         }
     }
-    
+
     for k, v in files.items():
-        print(f'Dataset: {k}')
-        df = fetch(v['path'], year)
-        df_clean = clean(df)
-        path = write_to_local(df_clean, v['file'])
-        write_to_gcs(path)
-        write_to_bq(df_clean, table_name=k)
+        load_dataset(year=year, table_name=k, file_info=v)
 
 
 if __name__ == '__main__':
-    load_data()
+    load_data_parent_flow(month='nov', year=2022)
 
