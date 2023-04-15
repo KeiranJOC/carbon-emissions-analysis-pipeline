@@ -2,7 +2,7 @@ from prefect.infrastructure.docker import DockerContainer
 
 
 docker_block = DockerContainer(
-    image='kjoconnell/carbon-emissions-analysis-pipeline:v10',
+    image='kjoconnell/carbon-emissions-analysis-pipeline:v12',
     image_pull_policy='ALWAYS',
     auto_remove=True,
 )

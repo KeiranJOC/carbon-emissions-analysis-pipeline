@@ -1,12 +1,18 @@
-resource "google_bigquery_dataset" "dataset" {
-  dataset_id = var.bq_dataset
+resource "google_bigquery_dataset" "dataset_raw" {
+  dataset_id = var.bq_dataset_raw
   project    = var.project
   location   = var.region
 }
 
+# resource "google_bigquery_dataset" "dataset" {
+#   dataset_id = var.bq_dataset
+#   project    = var.project
+#   location   = var.region
+# }
+
 resource "google_bigquery_table" "energy_consumption" {
-  dataset_id          = google_bigquery_dataset.dataset.dataset_id
-  table_id            = "energy_consumption"
+  dataset_id          = google_bigquery_dataset.dataset_raw.dataset_id
+  table_id            = "energy_consumption_raw"
   deletion_protection = false
 
   time_partitioning {
@@ -282,8 +288,8 @@ EOF
 }
 
 resource "google_bigquery_table" "conversion_factors" {
-  dataset_id          = google_bigquery_dataset.dataset.dataset_id
-  table_id            = "conversion_factors"
+  dataset_id          = google_bigquery_dataset.dataset_raw.dataset_id
+  table_id            = "conversion_factors_raw"
   deletion_protection = false
 
   clustering = [

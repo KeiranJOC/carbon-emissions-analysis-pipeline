@@ -77,7 +77,7 @@ def write_to_bq(df: pd.DataFrame, table_name: str) -> None:
     gcp_credentials_block = GcpCredentials.load('de-zoomcamp-gcp')
 
     df.to_gbq(
-        destination_table=f'carbon_emissions_data.{table_name}',
+        destination_table=f'carbon_emissions_raw.{table_name}',
         project_id='spry-alignment-375710',
         credentials=gcp_credentials_block.get_credentials_from_service_account(),
         if_exists='append'
@@ -104,14 +104,14 @@ def load_data_parent_flow(months: list[str] = ['nov'], years: list[int] = [2022]
             'path': f'data/ghg-conversion-factors-{year}-flat-format.xlsx',
             'name': f'ghg-conversion-factors-{year}',
         }
-        load_dataset(year=year, table_name='conversion_factors', file_info=conversion_factors_file)
+        load_dataset(year=year, table_name='conversion_factors_raw', file_info=conversion_factors_file)
 
         for month in months:    
             energy_consumption_file = {
                 'path': f'http://www.ecodriver.uk.com/eCMS/Files/MOJ/ministryofjustice_{month}-{year}.csv',
                 'name': f'ministry_of_justice_{month}-{year}',
             }
-            load_dataset(year=year, table_name='energy_consumption', file_info=energy_consumption_file)
+            load_dataset(year=year, table_name='energy_consumption_raw', file_info=energy_consumption_file)
 
 
 if __name__ == '__main__':

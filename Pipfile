@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+dbt-bigquery = "==1.4.3"
 pandas = "==1.5.2"
 prefect = "==2.7.7"
 prefect-gcp = {extras = ["cloud_storage"], version = "0.2.4"}

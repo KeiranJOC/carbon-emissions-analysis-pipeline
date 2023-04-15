@@ -19,11 +19,17 @@ variable "storage_class" {
   default     = "STANDARD"
 }
 
-variable "bq_dataset" {
+variable "bq_dataset_raw" {
   description = "BigQuery Dataset that raw data (from GCS) will be written to"
   type        = string
-  default     = "carbon_emissions_data"
+  default     = "carbon_emissions_raw"
 }
+
+# variable "bq_dataset" {
+#   description = "BigQuery Dataset that transformed data (from dbt) will be written to"
+#   type        = string
+#   default     = "carbon_emissions"
+# }
 
 variable "credentials" {
   description = "Path to service-account-authkeys.json"
