@@ -11,6 +11,4 @@
 **__pycache__/
 .history
 serving_dir
-*.csv
 .ipynb_checkpoints/
-*.parquet

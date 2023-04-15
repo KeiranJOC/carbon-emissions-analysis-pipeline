@@ -1,0 +1,3 @@
+METER,CATEGORY_LEVEL_1,CATEGORY_LEVEL_2,CATEGORY_LEVEL_3,CATEGORY_LEVEL_4,UNIT_OF_MEASUREMENT,GREENHOUSE_GAS_UNIT
+natural gas,Fuels,Gaseous fuels,Natural gas,,kWh (Gross CV),kg C02e
+grid electricity,UK electricity,Electricity generated,Electricity: UK,2020,kWh,kg CO2e
