@@ -9,13 +9,10 @@ resource "google_bigquery_table" "energy_consumption" {
   table_id            = "energy_consumption"
   deletion_protection = false
 
-  # time_partitioning {
-  #   type = "DAY"
-  # }
-
-  # labels = {
-  #   env = "default"
-  # }
+  time_partitioning {
+    type  = "MONTH"
+    field = "date"
+  }
 
   schema = <<EOF
 [
@@ -36,7 +33,7 @@ resource "google_bigquery_table" "energy_consumption" {
   },
   {
     "name": "date",
-    "type": "string",
+    "type": "DATE",
     "mode": "NULLABLE"
   },
   {
@@ -289,13 +286,12 @@ resource "google_bigquery_table" "conversion_factors" {
   table_id            = "conversion_factors"
   deletion_protection = false
 
-  # time_partitioning {
-  #   type = "DAY"
-  # }
-
-  # labels = {
-  #   env = "default"
-  # }
+  clustering = [
+    "scope",
+    "level_1",
+    "level_2",
+    "level_3"
+  ]
 
   schema = <<EOF
 [

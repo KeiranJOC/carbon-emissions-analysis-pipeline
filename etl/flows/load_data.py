@@ -9,6 +9,7 @@ from prefect_gcp.cloud_storage import GcsBucket
 @task(retries=3)
 def fetch(dataset_url: str, year: int) -> pd.DataFrame:
     
+    # conversion factors file is .xlsx; energy consumption files are .csv
     if dataset_url.split('.')[-1] == 'xlsx':
         df = pd.read_excel(
             dataset_url,
@@ -43,7 +44,11 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
 
     # convert all columns to string
     df_clean = df_clean.fillna('')
-    df_clean = df_clean.astype(str) 
+    df_clean = df_clean.astype(str)
+
+    # convert date column to datetime so that we can use it for partitioning
+    if 'date' in df_clean.columns:
+        df_clean['date'] = pd.to_datetime(df_clean['date'], dayfirst=True)
     
     print(f'Shape: {df_clean.shape}\n')
 
@@ -75,7 +80,7 @@ def write_to_bq(df: pd.DataFrame, table_name: str) -> None:
         destination_table=f'carbon_emissions_data.{table_name}',
         project_id='spry-alignment-375710',
         credentials=gcp_credentials_block.get_credentials_from_service_account(),
-        if_exists='replace'
+        if_exists='append'
     )
 
 
@@ -91,23 +96,41 @@ def load_dataset(year: int, table_name: str, file_info: dict) -> None:
 
 
 @flow()
-def load_data_parent_flow(month: str, year: int) -> None:
+def load_data_parent_flow(months: list[str] = ['nov'], years: list[int] = [2022]) -> None:
 
-    files = {
-        'energy_consumption': {
-            'path': f'http://www.ecodriver.uk.com/eCMS/Files/MOJ/ministryofjustice_{month}-{year}.csv',
-            'name': f'ministry_of_justice_{month}-{year}',
-        },
-        'conversion_factors': {
+    for year in years:
+        
+        conversion_factors_file = {
             'path': f'data/ghg-conversion-factors-{year}-flat-format.xlsx',
             'name': f'ghg-conversion-factors-{year}',
         }
-    }
+        load_dataset(year=year, table_name='conversion_factors', file_info=conversion_factors_file)
 
-    for k, v in files.items():
-        load_dataset(year=year, table_name=k, file_info=v)
+        for month in months:    
+            energy_consumption_file = {
+                'path': f'http://www.ecodriver.uk.com/eCMS/Files/MOJ/ministryofjustice_{month}-{year}.csv',
+                'name': f'ministry_of_justice_{month}-{year}',
+            }
+            load_dataset(year=year, table_name='energy_consumption', file_info=energy_consumption_file)
 
 
 if __name__ == '__main__':
-    load_data_parent_flow(month='nov', year=2022)
+    
+    months = [
+        'jan',
+        'feb',
+        'mar',
+        'apr',
+        'may',
+        'jun',
+        'jul',
+        'aug',
+        'sep',
+        'oct',
+        'nov',
+        'dec',
+    ]
+    years = [2022]
+
+    load_data_parent_flow(months=months, years=years)
 
