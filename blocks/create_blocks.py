@@ -16,6 +16,13 @@ with open(environ['GCP_SERVICE_ACCOUNT_FILE'], 'r') as f:
 credentials_block = GcpCredentials(service_account_info=info)
 credentials_block.save(environ['GCP_CREDENTIALS_BLOCK'], overwrite=True)
 
+# GCS bucket
+storage_block = GcsBucket(
+    gcp_credentials=GcpCredentials.load(environ['GCP_CREDENTIALS_BLOCK']),
+    bucket=environ['GCS_BUCKET_NAME']
+)
+storage_block.save(environ['GCS_STORAGE_BLOCK'], overwrite=True)
+
 # BQ target config
 target_configs = BigQueryTargetConfigs(
     schema=environ['BQ_TRANSFORMATION_SCHEMA'],

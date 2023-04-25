@@ -1,77 +1,101 @@
+{{
+    config(
+        partition_by = {
+            "field": "timestamp",
+            "data_type": "timestamp",
+            "granularity": "month"
+        },
+        cluster_by = [
+            'site',
+            'energy_type'
+        ]
+    )
+}}
+
 with unpivot_records as (
     select
         site
         , meter
         , unit
-        , safe_cast(date as date format 'DD/MM/YYYY') as date
+        , date
         , parse_time('%H%M', time) as time
         , safe_cast(amount as numeric) as amount
-    from {{ source('carbon_emissions_raw', 'energy_consumption_raw') }} as ecr
+    from {{ ref('stg_energy_consumption') }} as ec
     unpivot(amount for time in (
-        ecr.0000
-        , ecr.0030
-        , ecr.0100
-        , ecr.0130
-        , ecr.0200
-        , ecr.0230
-        , ecr.0300
-        , ecr.0330
-        , ecr.0400
-        , ecr.0430
-        , ecr.0500
-        , ecr.0530
-        , ecr.0600
-        , ecr.0630
-        , ecr.0700
-        , ecr.0730
-        , ecr.0800
-        , ecr.0830
-        , ecr.0900
-        , ecr.0930
-        , ecr.1000
-        , ecr.1030
-        , ecr.1100
-        , ecr.1130
-        , ecr.1200
-        , ecr.1230
-        , ecr.1300
-        , ecr.1330
-        , ecr.1400
-        , ecr.1430
-        , ecr.1500
-        , ecr.1530
-        , ecr.1600
-        , ecr.1630
-        , ecr.1700
-        , ecr.1730
-        , ecr.1800
-        , ecr.1830
-        , ecr.1900
-        , ecr.1930
-        , ecr.2000
-        , ecr.2030
-        , ecr.2100
-        , ecr.2130
-        , ecr.2200
-        , ecr.2230
-        , ecr.2300
-        , ecr.2330
+        ec.0000
+        , ec.0030
+        , ec.0100
+        , ec.0130
+        , ec.0200
+        , ec.0230
+        , ec.0300
+        , ec.0330
+        , ec.0400
+        , ec.0430
+        , ec.0500
+        , ec.0530
+        , ec.0600
+        , ec.0630
+        , ec.0700
+        , ec.0730
+        , ec.0800
+        , ec.0830
+        , ec.0900
+        , ec.0930
+        , ec.1000
+        , ec.1030
+        , ec.1100
+        , ec.1130
+        , ec.1200
+        , ec.1230
+        , ec.1300
+        , ec.1330
+        , ec.1400
+        , ec.1430
+        , ec.1500
+        , ec.1530
+        , ec.1600
+        , ec.1630
+        , ec.1700
+        , ec.1730
+        , ec.1800
+        , ec.1830
+        , ec.1900
+        , ec.1930
+        , ec.2000
+        , ec.2030
+        , ec.2100
+        , ec.2130
+        , ec.2200
+        , ec.2230
+        , ec.2300
+        , ec.2330
     ))
+)
+
+, create_timestamps as (
+    select
+        site
+        , meter
+        , unit
+        , case
+            when lower(meter) like '%natural gas%' then 'Natural Gas'
+            when lower(meter) like '%grid electricity%' then 'Grid Electricity'
+            when lower(meter) like '%water%' then 'Water'
+            when lower(meter) like '%imported energy%' then 'Imported Energy'
+            else null
+        end as energy_type
+        , parse_timestamp('%F %T', date || time) as timestamp
+        , amount
+    from unpivot_records
 )
 
 select
     *
     , {{ dbt_utils.generate_surrogate_key([
-            'site'
-            , 'meter'
-            , 'timestamp'
+        'site'
+        , 'meter'
+        , 'timestamp'
     ]) }} as record_key
-from (    
-    select
-        site
-        , meter
-        , unit
-        , parse_timestamp('%F %T', date || time) as timestamp
-        , amount
-    from unpivot_records
-)
+from create_timestamps
+where amount is not null -- drop rows that we have no meter readings for

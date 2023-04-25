@@ -1,0 +1,4 @@
+ENERGY_TYPE,CATEGORY_LEVEL_1,CATEGORY_LEVEL_2,CATEGORY_LEVEL_3,UNIT_OF_MEASUREMENT,GREENHOUSE_GAS_UNIT
+Natural Gas,Fuels,Gaseous fuels,Natural gas,kWh (Net CV),kg CO2e
+Grid Electricity,UK electricity,Electricity generated,Electricity: UK,kWh,kg CO2e
+Water,Water supply,Water supply,Water supply,cubic metres,kg CO2e

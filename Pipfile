@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 dbt-bigquery = "==1.4.3"
 pandas = "==1.5.2"
-prefect = "==2.7.7"
+prefect = "==2.10.5"
 prefect-dbt = {extras = ["bigquery"], version = "0.3.1"}
 prefect-gcp = {extras = ["cloud_storage"], version = "0.2.4"}
 protobuf = "==4.21.11"

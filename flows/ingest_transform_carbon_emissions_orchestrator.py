@@ -7,7 +7,7 @@ from flows.transform_carbon_emissions import transform_carbon_emissions
 @flow
 def ingest_transform_carbon_emissions(
     months: list = ['nov'],
-    years: list = [2022]
+    years: list = ['2022']
 ):
     ingest_carbon_emissions_raw(months, years)
     transform_carbon_emissions()
@@ -28,6 +28,6 @@ if __name__ == '__main__':
         'nov',
         'dec',
     ]
-    years = [2022]
+    years = ['2022']
 
     ingest_transform_carbon_emissions(months, years)
