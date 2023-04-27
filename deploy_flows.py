@@ -10,15 +10,13 @@ from flows.ingest_transform_carbon_emissions_orchestrator import ingest_carbon_e
 from flows.ingest_transform_carbon_emissions_orchestrator import ingest_transform_carbon_emissions
 
 
+"""
+Build deployments to ingest data, transform data, or both
+"""
+
 load_dotenv()
-logging.basicConfig(level=logging.INFO)
-docker_image = f'{environ["GCP_CONTAINER_REPOSITORY_ADDRESS"]}/{environ["DOCKER_IMAGE_NAME"]}:{environ["DOCKER_IMAGE_TAG"]}'
 
-
-if __name__ == '__main__':
-    logging.info('Creating Cloud Run job block')
-    cloud_run_job(docker_image)
-    
+if __name__ == '__main__':    
     full_deployment = Deployment.build_from_flow(
         flow=ingest_transform_carbon_emissions,
         name=environ['PREFECT_DEPLOYMENT_NAME'],

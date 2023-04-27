@@ -7,6 +7,10 @@ from prefect import flow, task
 from prefect_gcp import GcpCredentials, GcsBucket
 
 
+"""
+Download datasets, minimally transform, then load into BigQuery
+"""
+
 load_dotenv()
 
 @task(retries=3)
@@ -67,7 +71,6 @@ def write_to_gcs(path: Path) -> None:
 
 @task()
 def write_to_bq(df: pd.DataFrame, table_name: str) -> None:
-    print(df.columns)
     gcp_credentials_block = GcpCredentials.load(environ['GCP_CREDENTIALS_BLOCK'])
     df.to_gbq(
         destination_table=f'{environ["BQ_INGESTION_SCHEMA"]}.{table_name}',

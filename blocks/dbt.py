@@ -9,9 +9,12 @@ from prefect_dbt.cli import DbtCliProfile
 from prefect_dbt.cli.commands import trigger_dbt_cli_command
 
 
-load_dotenv()
+"""
+Custom block for managing dbt
+code taken from https://github.com/anna-geller/prefect-dataplatform/blob/main/dataplatform/blocks/dbt.py 
+"""
 
-# code taken from https://github.com/anna-geller/prefect-dataplatform/blob/main/dataplatform/blocks/dbt.py 
+load_dotenv()
 
 class Dbt(Block):
 

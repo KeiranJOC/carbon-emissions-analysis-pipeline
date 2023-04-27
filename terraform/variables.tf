@@ -5,13 +5,13 @@ locals {
 
 variable "project" {
   description = "GCP Project ID"
-  default     = "spry-alignment-375710"
+  default     = "spry-alignment-375710" # replace with your project ID
   type        = string
 }
 
 variable "region" {
   description = "Region for GCP resources"
-  default     = "australia-southeast2"
+  default     = "australia-southeast2" # replace with your region
   type        = string
 }
 
@@ -29,5 +29,5 @@ variable "bq_dataset_raw" {
 variable "credentials" {
   description = "Path to service-account-authkeys.json"
   type        = string
-  default     = "~/.gc/spry-alignment.json"
+  default     = "~/.gc/spry-alignment.json" # replace with the path to your access keys file
 }

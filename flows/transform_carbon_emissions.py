@@ -4,6 +4,10 @@ from blocks.dbt import Dbt
 from dotenv import load_dotenv
 
 
+"""
+Runs dbt transformations on the raw data in BigQuery
+"""
+
 load_dotenv()
 
 @flow
