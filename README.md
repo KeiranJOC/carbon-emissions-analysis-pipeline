@@ -74,18 +74,20 @@ The following are required to run this project:
     - this image shows where to find the address of your container repository:
     ![image](container_repository_address.png)
     
-6. Run `make setup` to perform the following actions:
+6. Run `pip install -e .` to install the blocks and flows code as modules
+    
+7. Run `make setup` to perform the following actions:
     - build a Docker image containing the environment and code to run the Prefect flows
     - push the Docker image to the Artifact Registry
     - create Prefect configuration blocks
     - create deployments for the flows to ingest and transform data
     - launch a Prefect agent to run the deployments
 
-7. Open a new terminal window and run `bash run_data_ingestion_backfill.sh` to trigger parallelized data ingestion flows. You can monitor the progress in the Prefect Cloud UI.
+8. Open a new terminal window and run `bash run_data_ingestion_backfill.sh` to trigger parallelized data ingestion flows. You can monitor the progress in the Prefect Cloud UI.
 
-8. Once finished, run `bash run_data_transformation.sh` to trigger the dbt transformation flow. You can monitor the progrss in the Prefect Cloud UI
+9. Once finished, run `bash run_data_transformation.sh` to trigger the dbt transformation flow. You can monitor the progrss in the Prefect Cloud UI
 
-9. Click on this link to view the dashboard built on top of the transformed data in BigQuery - https://lookerstudio.google.com/s/sK-dDaR7EjY
+10. Click on this link to view the dashboard built on top of the transformed data in BigQuery - https://lookerstudio.google.com/s/sK-dDaR7EjY
     ![image](greenhouse_gas_emissions_report.png)
 
 ### BiqQuery Optimisation
