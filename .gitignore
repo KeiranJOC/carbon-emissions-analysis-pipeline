@@ -12,3 +12,4 @@
 .history
 serving_dir
 .ipynb_checkpoints/
+*.egg-info/

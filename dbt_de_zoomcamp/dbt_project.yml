@@ -1,0 +1,29 @@
+name: 'dbt_de_zoomcamp'
+version: '1.0.0'
+config-version: 2
+
+profile: 'de_zoomcamp_prefect'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  dbt_de_zoomcamp:
+    carbon_emissions:
+      +materialized: table
+
+seeds:
+  dbt_de_zoomcamp:
+    carbon_emissions:
+      +column_types:
+        CATEGORY_LEVEL_4: string
+

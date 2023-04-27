@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: stg_conversion_factors
+    description: Staging model that converts data types, renames columns and drops null records from the raw data.
+
+  - name: stg_energy_consumption
+    description: Staging model that drops null records from the raw data.
+  
+  - name: dim_conversion_factors
+    description: Greenhouse gas conversion factors for various categories of UK energy consumption.
+    columns:
+      - name: record_key
+        description: A surrogate key that uniquely identifies each row
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_energy_consumption
+    description: Meter readings for gas, electricity, and water usage at UK Ministry of Justice buildings.
+    columns:
+      - name: record_key
+        description: A surrogate key that uniquely identifies each row
+        tests:
+          - unique
+          - not_null
+
+  - name: mart_carbon_emissions
+    description: Joining of energy consumption with conversion factors that enables analysis of carbon emissions at UK Ministry of Justice buildings.
+    columns:
+      - name: record_key
+        description: The surrogate key from `fact_energy_consumption` that uniquely identifies each row.
+        tests:
+          - unique
+      - name: greenhouse_gas_emissions
+        description: >
+          The value calculated by multiplying energy consumption amount * conversion factor.
+          If this is null then a join has failed.
+        tests:
+          - not_null
+
+  

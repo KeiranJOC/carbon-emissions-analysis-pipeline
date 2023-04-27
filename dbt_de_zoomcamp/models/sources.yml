@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+
+  - name: carbon_emissions_raw
+    description: Schema that stores raw crabon emissions data ingested from external sources
+    database: spry-alignment-375710
+    schema: carbon_emissions_raw
+    loader: Prefect
+
+    tables:
+
+      - name: conversion_factors_raw
+        description: >
+          Greenhouse gas conversion factors dataset published by the UK government - 
+          https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2022
+
+      - name: energy_consumption_raw
+        description: >
+          Energy consumption dataset published by the UK Ministry of Justice - 
+          http://www.ecodriver.uk.com/eCMS/Viewfiles.asp?folder=MOJ
+        

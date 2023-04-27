@@ -1,0 +1,12 @@
+dbt-bigquery==1.4.3
+gcsfs
+pandas==1.5.2
+pandas-gbq==0.18.1
+prefect==2.10.5
+prefect-dbt[bigquery]==0.3.1
+prefect-gcp[cloud_storage]==0.2.4
+protobuf==4.21.11
+pyarrow==10.0.1
+pydantic==1.10.7
+python-dotenv==1.0.0
+openpyxl==3.1.2
